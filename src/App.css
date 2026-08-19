@@ -70,6 +70,20 @@
   }
 }
 
+#settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+
+  @media (max-width: 1024px) {
+    padding: 24px 20px;
+  }
+}
+
 #next-steps {
   display: flex;
   border-top: 1px solid var(--border);
