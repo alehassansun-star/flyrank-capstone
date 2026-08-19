@@ -2,7 +2,7 @@
 
 ## Project Stack
 - Language: JavaScript/TypeScript (update once decided)
-- Framework: TBD (e.g. React + Vite)
+- Framework: React 18 + Vite
 - Package manager: npm
 
 ## Conventions
