@@ -50,14 +50,15 @@ export function AIInsightsPanel({ keyword, url }: AIInsightsPanelProps) {
         {loading ? "Generating..." : "Get AI Insights"}
       </button>
 
-      {error && (
-        <p role="alert" className="text-red-600 mt-2">
-          {error}
-        </p>
-      )}
+      <div aria-live="polite">
+  {error && (
+    <p role="alert" className="text-red-600 mt-2">
+      {error}
+    </p>
+  )}
 
-      {insights && (
-        <div className="mt-4 space-y-3">
+  {insights && (
+    <div className="mt-4 space-y-3">
           <div>
             <h3 className="font-semibold">Title suggestions</h3>
             <ul className="list-disc pl-5">
@@ -79,6 +80,7 @@ export function AIInsightsPanel({ keyword, url }: AIInsightsPanelProps) {
           </p>
         </div>
       )}
+    </div>
     </div>
   );
 }
