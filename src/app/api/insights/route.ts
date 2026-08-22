@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenAI } from "@google/genai";
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,28 +12,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "A keyword is required." }, { status: 400 });
     }
 
-    const message = await anthropic.messages.create({
-      model: "claude-sonnet-4-6",
-      max_tokens: 500,
-      system:
-        'You are an SEO analyst. Respond ONLY with valid JSON, no prose, matching exactly this shape: ' +
-        '{"titleSuggestions": string[3], "contentGaps": string[2], "priority": "low"|"medium"|"high"}',
-      messages: [
-        {
-          role: "user",
-          content: `Keyword: ${keyword}\nURL: ${url ?? "not provided"}\nGive SEO improvement suggestions.`,
-        },
-      ],
+    const response = await ai.models.generateContent({
+     model: "gemini-3.6-flash",
+      contents: `You are an SEO analyst. Respond ONLY with valid JSON, no prose, matching exactly this shape: {"titleSuggestions": string[3], "contentGaps": string[2], "priority": "low"|"medium"|"high"}.
+
+Keyword: ${keyword}
+URL: ${url ?? "not provided"}
+Give SEO improvement suggestions.`,
+      config: {
+        responseMimeType: "application/json",
+      },
     });
 
-    const textBlock = message.content.find((block) => block.type === "text");
-    if (!textBlock || textBlock.type !== "text") {
+    const text = response.text;
+    if (!text) {
       throw new Error("No text response from model");
     }
 
     let parsed: unknown;
     try {
-      parsed = JSON.parse(textBlock.text);
+      parsed = JSON.parse(text);
     } catch {
       throw new Error("Model did not return valid JSON");
     }
