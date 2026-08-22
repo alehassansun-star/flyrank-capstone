@@ -1,17 +1,15 @@
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import "./globals.css";
-import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-export const metadata = {
+export const metadata: Metadata = {
   title: "FlyRank Capstone",
   description: "Rank tracking dashboard",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en">
       <body>
         <nav className="flex gap-6 p-4 border-b border-gray-200">
           <a href="/" className="font-semibold">Home</a>
